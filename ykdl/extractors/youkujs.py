@@ -14,6 +14,9 @@ stream_code_to_id = {
     'flvhd' : 'SD',
     'flv'   : 'SD',
     '3gphd' : 'LD'
+    'mp5hd' : 'HD',
+    'mp5hd2' : 'HD',
+    'mp5hd3' : 'HD'
 }
 stream_code_to_profiles = {
     'BD' : u'1080p',
