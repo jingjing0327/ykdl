@@ -13,7 +13,7 @@ stream_code_to_id = {
     'mp4'   : 'HD',
     'flvhd' : 'SD',
     'flv'   : 'SD',
-    '3gphd' : 'LD'
+    '3gphd' : 'LD',
     'mp5hd' : 'HD',
     'mp5hd2' : 'HD',
     'mp5hd3' : 'HD'

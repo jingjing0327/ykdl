@@ -86,7 +86,8 @@ class YoukuBase(VideoExtractor):
             )
             no += 1
             url = json.loads(get_content(u))[0]['server']
-            urls.append(url)
+            # urls.append(url)
+            urls.append(u)
 
         info.streams[stream_id]['src'] = urls
         if not info.streams[stream_id]['src'] and self.password_protected:
