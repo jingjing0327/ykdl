@@ -67,7 +67,7 @@ class YoukuBase(VideoExtractor):
                 ep    = ep,
                 oip   = str(self.ip),
                 token = token,
-                yxon  = 1,
+                yxon  = 0,
                 myp   = 0,
                 ymovie= 1,
                 ts    = seg['total_milliseconds_audio'][:-3],
@@ -85,7 +85,7 @@ class YoukuBase(VideoExtractor):
                 q         = q
             )
             no += 1
-            url = json.loads(get_content(u))[0]['server']
+            # url = json.loads(get_content(u))[0]['server']
             # urls.append(url)
             urls.append(u)
 
