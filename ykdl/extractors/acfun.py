@@ -20,6 +20,8 @@ class Acfun(EmbedExtractor):
         else:
             sourceVid=user_sourceVid
 
+
+        print('sourceVid==>>'+str(sourceVid))
         data = json.loads(get_content('http://www.acfun.tv/video/getVideo.aspx?id={}'.format(sourceVid)))
         sourceType = data['sourceType']
         sourceId = data['sourceId']
