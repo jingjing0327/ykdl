@@ -15,7 +15,6 @@ appkey='f3bb208b3d081dc8'
 SECRETKEY_MINILOADER = '1c15888dc316e05a15fdd0a02ed6584f'
 
 def parse_cid_playurl(xml):
-    print(str(xml))
     from xml.dom.minidom import parseString
     urls = []
     size = 0
