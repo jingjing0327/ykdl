@@ -53,10 +53,12 @@ class YoukuBase(VideoExtractor):
         sid, token = init(self.ep)
         segs = self.streams_parameter[stream_id]['segs']
         streamfileid = self.streams_parameter[stream_id]['fileid']
+
         urls = []
         no = 0
         for seg in segs:
             k = seg['key']
+            duration=seg['total_milliseconds_video']
             assert k != -1, '%s invalid segment key!' % self.name
             fileId = getFileid(streamfileid, no)
             ep  = create_ep(sid, fileId, token)
@@ -73,7 +75,8 @@ class YoukuBase(VideoExtractor):
                 ts    = seg['total_milliseconds_audio'][:-3],
                 hd    = stream_type_to_hd[stream_id],
                 special = 'true',
-                yyp   = 2
+                yyp   = 2,
+                d=duration
             ))
             nu = '%02x' % no
             u = 'http://k.youku.com/player/getFlvPath/sid/{sid}_{nu}' \

@@ -19,20 +19,23 @@ class VideoInfo():
 
     def print_stream_info(self, stream_id, show_all = False):
         stream = self.streams[stream_id]
-        print("    - format:        %s" % log.sprint(stream_id, log.NEGATIVE))
-        if 'container' in stream:
-            print("      container:     %s" % stream['container'])
-        if 'video_profile' in stream:
-            print("      video-profile: %s" % stream['video_profile'])
-        if 'quality' in stream:
-            print("      quality:       %s" % stream['quality'])
-        if 'size' in stream:
-            print("      size:          %s MiB (%s bytes)" % (round(stream['size'] / 1048576, 1), stream['size']))
-        print("    # download-with: %s" % log.sprint("ykdl --format=%s [URL]" % stream_id, log.UNDERLINE))
+        # print("    - format:        %s" % log.sprint(stream_id, log.NEGATIVE))
+        # if 'container' in stream:
+        #     print("      container:     %s" % stream['container'])
+        # if 'video_profile' in stream:
+        #     print("      video-profile: %s" % stream['video_profile'])
+        # if 'quality' in stream:
+        #     print("      quality:       %s" % stream['quality'])
+        # if 'size' in stream:
+        #     print("      size:          %s MiB (%s bytes)" % (round(stream['size'] / 1048576, 1), stream['size']))
+        # print("    # download-with: %s" % log.sprint("ykdl --format=%s [URL]" % stream_id, log.UNDERLINE))
         if show_all:
-            print("Real urls:")
-            for url in stream['src']:
-                print("%s" % url)
+            print("-----------------------------------")
+            a=json.dumps(stream)
+            jo=json.loads(a)
+            print(jo)
+            # for url in stream['src']:
+            #     print("%s" % url)
 
     def jsonlize(self):
         json_dict = { 'site'   : self.site,
@@ -43,17 +46,16 @@ class VideoInfo():
         return json_dict
 
     def print_info(self, stream_id = None, show_all = False):
-        print("site:                %s" % self.site)
-        print("title:               %s" % self.title)
-        print("artist:              %s" % self.artist)
-        print("streams:")
+        # print("site:                %s" % self.site)
+        # print("title:               %s" % self.title)
+        # print("artist:              %s" % self.artist)
+        # print("streams:")
         if not show_all:
             stream_id = stream_id or self.stream_types[0]
             self.print_stream_info(stream_id, show_all)
         else:
             for stream_id in self.stream_types:
                 self.print_stream_info(stream_id, show_all)
-
     def build_file_name(self,stream_id):
         if not self.title:
             self.title = self.site + str(random.randint(1, 9999))
