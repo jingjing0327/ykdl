@@ -41,7 +41,8 @@ class YoukuBase(VideoExtractor):
                 info.streams[stream_id] = {
                     'container': id_to_container[stream_id],
                     'video_profile': stream_code_to_profiles[stream_id],
-                    'size': stream['size']
+                    'size': stream['size'],
+                    'time':stream['milliseconds_video']
                 }
                 info.stream_types.append(stream_id)
                 self.extract_single(info, stream_id)

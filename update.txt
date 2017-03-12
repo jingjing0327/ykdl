@@ -1,0 +1,39 @@
+youkubase.py 
+76-78
+            # url = json.loads(get_content(u))[0]['server']
+            # urls.append(url)
+            urls.append(u)
+
+
+videoinfo.py
+22-40
+        # print("    - format:        %s" % log.sprint(stream_id, log.NEGATIVE))
+        # if 'container' in stream:
+        #     print("      container:     %s" % stream['container'])
+        # if 'video_profile' in stream:
+        #     print("      video-profile: %s" % stream['video_profile'])
+        # if 'quality' in stream:
+        #     print("      quality:       %s" % stream['quality'])
+        # if 'size' in stream and stream['size'] != 0 and stream['size'] != float('inf'):
+        #     print("      size:          %s MiB (%s bytes)" % (round(stream['size'] / 1048576, 1), stream['size']))
+        # print("    # download-with: %s" % log.sprint("ykdl --format=%s [URL]" % stream_id, log.UNDERLINE))
+        # if show_all:
+        #     print("Real urls:")
+        #     for url in stream['src']:
+        #         print("%s" % url)
+        if show_all:
+            print("-----------------------------------")
+            a=json.dumps(stream)
+            jo=json.loads(a)
+            print(jo)
+acfun.py
+17-24
+
+        user_sourceVid=match1(self.url,r'id=([0-9]*)')
+        if(user_sourceVid is None):
+
+            html = get_content(self.url)
+
+            sourceVid = match1(html, "data-vid=\"([a-zA-Z0-9=]+)\" data-")
+        else:
+            sourceVid=user_sourceVid
