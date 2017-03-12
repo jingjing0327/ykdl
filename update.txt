@@ -26,6 +26,13 @@ videoinfo.py
             a=json.dumps(stream)
             jo=json.loads(a)
             print(jo)
+52-55
+        # print("site:                %s" % self.site)
+        # print("title:               %s" % self.title)
+        # print("artist:              %s" % self.artist)
+        # print("streams:")
+
+
 acfun.py
 17-24
 
