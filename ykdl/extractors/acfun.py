@@ -9,19 +9,14 @@ import json
 
 class Acfun(EmbedExtractor):
 
+    name = u'ACfun 弹幕视频网'
+
     def prepare(self):
 
-        user_sourceVid=match1(self.url,r'id=([0-9]*)')
-        if(user_sourceVid is None):
+        html = get_content(self.url)
 
-            html = get_content(self.url)
+        sourceVid = match1(html, "data-vid=\"([a-zA-Z0-9=]+)\" data-")
 
-            sourceVid = match1(html, "data-vid=\"([a-zA-Z0-9=]+)\" data-(scode|cid)=")
-        else:
-            sourceVid=user_sourceVid
-
-
-        # print('sourceVid==>>'+str(sourceVid))
         data = json.loads(get_content('http://www.acfun.tv/video/getVideo.aspx?id={}'.format(sourceVid)))
         sourceType = data['sourceType']
         sourceId = data['sourceId']
@@ -34,18 +29,19 @@ class Acfun(EmbedExtractor):
             #workaround for letv, because it is letvcloud
             sourceType = 'le.letvcloud'
             sourceId = (sourceId, '2d8c027396')
+        elif sourceType == 'qq':
+            sourceType = 'qq.video'
 
         self.video_info=(sourceType, sourceId)
 
-    def download_playlist(self, url, param):
-        self.url = url
+    def prepare_playlist(self):
 
         html = get_content(self.url)
 
-        videos = matchall(html, ['href="([\/a-zA-Z0-9_]+)" title="Part'])
+        videos = matchall(html, ['href="(\/v\/[a-zA-Z0-9_]+)" title="'])
 
         for v in videos:
             next_url = "http://www.acfun.tv/{}".format(v)
-            self.download(next_url, param)
+            self.video_info_list.append(('acfun', next_url))
 
 site = Acfun()

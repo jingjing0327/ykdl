@@ -3,9 +3,21 @@
 
 import os
 import sys
+from logging import getLogger
 from ykdl.compact import Request, urlopen
-
+from ykdl.util import log
 from .html import fake_headers
+
+logger = getLogger("downloader")
+
+try:
+    from concurrent.futures import ThreadPoolExecutor
+    MultiThread = True
+except:
+    MultiThread = False
+    # logger.warning("failed to import ThreadPoolExecutor!")
+    # logger.warning("multithread download disabled!")
+    # logger.warning("please install concurrent.futures from https://github.com/agronholm/pythonfutures !")
 
 def simple_hook(arg1, arg2, arg3):
     if arg3 > 0:
@@ -18,7 +30,13 @@ def simple_hook(arg1, arg2, arg3):
         sys.stdout.write('\r' + str(round(arg1 * arg2 / 1048576, 1)) + 'MB')
         sys.stdout.flush()
 
-def save_url(url, name, reporthook = simple_hook):
+def save_url(url, name, ext, status, part = None, reporthook = simple_hook):
+    if part is None:
+        print("Download: " + name)
+        name = name + '.' + ext
+    else:
+        print("Download: " + name + " part %d" % part)
+        name = name + '_%d_.' % part + ext
     bs = 1024*8
     size = -1
     read = 0
@@ -32,6 +50,10 @@ def save_url(url, name, reporthook = simple_hook):
         filesize = os.path.getsize(name)
         if filesize == size:
             print('Skipped: file already downloaded')
+            if part is None:
+                status[0] = 1
+            else:
+                status[part] =1
             return
         elif -1 != size:
             req.add_header('Range', 'bytes=%d-' % filesize)
@@ -48,16 +70,29 @@ def save_url(url, name, reporthook = simple_hook):
             tfp.write(block)
             blocknum += 1
             reporthook(blocknum, bs, size)
+    if part is None:
+        status[0] = 1
+    else:
+        status[part] =1
 
-def save_urls(urls, name, ext):
-    no = 0
-    for u in urls:
-        if type(urls) is list and len(urls) == 1:
-            print("Download: " + name)
-            n = name + '.' + ext
-        else:
-            print("Download: " + name + " part %d" % no)
-            n = name + '_%d_.' % no + ext
-        save_url(u, n)
-        print("")
-        no += 1
+def save_urls(urls, name, ext, jobs=1):
+    status = [0] * len(urls)
+    if len(urls) == 1:
+        save_url(urls[0], name, ext, status)
+        if 0 in status:
+            logger.error("donwload failed")
+        return not 0 in status
+    if not MultiThread:
+        for no, u in enumerate(urls):
+            save_url(u, name, ext, status, part = no)
+    else:
+        with ThreadPoolExecutor(max_workers=jobs) as worker:
+            for no, u in enumerate(urls):
+                worker.submit(save_url, u, name, ext, status, part = no)
+            worker.shutdown()
+    i = 0
+    for a in status:
+        if a == 0:
+            logger.error("donwload failed at part {}".format(i))
+        i += 1
+    return not 0 in status

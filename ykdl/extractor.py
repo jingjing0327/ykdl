@@ -1,14 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from logging import getLogger
+
+from ykdl.compact import compact_isstr
+
 class VideoExtractor():
     def __init__(self):
+        self.logger = getLogger(self.name)
         self.url = None
         self.vid = None
 
     def parser(self, url):
         self.__init__()
-        if isinstance(url, str) and url.startswith('http'):
+        if compact_isstr(url) and url.startswith('http'):
             self.url = url
         else:
             self.vid= url
@@ -24,7 +29,8 @@ class VideoExtractor():
         video_list = self.prepare_list()
         if not video_list:
             raise NotImplementedError('playlist not support for {} with url: {}'.format(self.name, self.url))
-        return [self.parser(v) for v in video_list]
+        for video in video_list:
+            yield self.parser(video)
 
     def prepare(self):
         pass

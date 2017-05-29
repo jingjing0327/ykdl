@@ -26,16 +26,18 @@ class VideoInfo():
         #     print("      video-profile: %s" % stream['video_profile'])
         # if 'quality' in stream:
         #     print("      quality:       %s" % stream['quality'])
-        # if 'size' in stream:
+        # if 'size' in stream and stream['size'] != 0 and stream['size'] != float('inf'):
         #     print("      size:          %s MiB (%s bytes)" % (round(stream['size'] / 1048576, 1), stream['size']))
         # print("    # download-with: %s" % log.sprint("ykdl --format=%s [URL]" % stream_id, log.UNDERLINE))
+        # if show_all:
+        #     print("Real urls:")
+        #     for url in stream['src']:
+        #         print("%s" % url)
         if show_all:
             print("-----------------------------------")
             a=json.dumps(stream)
             jo=json.loads(a)
             print(jo)
-            # for url in stream['src']:
-            #     print("%s" % url)
 
     def jsonlize(self):
         json_dict = { 'site'   : self.site,
@@ -43,6 +45,7 @@ class VideoInfo():
                       'artist'    : self.artist,
                     }
         json_dict['streams'] = self.streams
+        json_dict['stream_types'] = self.stream_types
         return json_dict
 
     def print_info(self, stream_id = None, show_all = False):
@@ -56,6 +59,7 @@ class VideoInfo():
         else:
             for stream_id in self.stream_types:
                 self.print_stream_info(stream_id, show_all)
+
     def build_file_name(self,stream_id):
         if not self.title:
             self.title = self.site + str(random.randint(1, 9999))
