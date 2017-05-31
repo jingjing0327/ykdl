@@ -70,6 +70,7 @@ class Iqiyi(VideoExtractor):
 
         tvid, vid = self.vid
         vps_data = getvps(tvid, vid)
+        # print(vps_data)
         assert vps_data['code'] == 'A00000', 'can\'t play this video!!'
         url_prefix = vps_data['data']['vp']['du']
         stream = vps_data['data']['vp']['tkl'][0]
@@ -82,7 +83,7 @@ class Iqiyi(VideoExtractor):
                 url = url_prefix + seg_info['l']
                 json_data=json.loads(get_content(url))
                 down_url = json_data['l']
-                real_urls.append(down_url)
+                real_urls.append((down_url,seg_info['d']))
             stream = self.vd_2_id[bid]
             info.stream_types.append(stream)
             stream_profile = self.id_2_profile[stream]

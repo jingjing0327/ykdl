@@ -21,7 +21,8 @@ def parse_cid_playurl(xml):
     doc = parseString(xml.encode('utf-8'))
     ext = doc.getElementsByTagName('format')[0].firstChild.nodeValue
     for durl in doc.getElementsByTagName('durl'):
-        urls.append(durl.getElementsByTagName('url')[0].firstChild.nodeValue)
+        length=durl.getElementsByTagName('length')[0].firstChild.nodeValue
+        urls.append((durl.getElementsByTagName('url')[0].firstChild.nodeValue,length))
         size += int(durl.getElementsByTagName('size')[0].firstChild.nodeValue)
     return urls, size, ext
 
@@ -48,6 +49,7 @@ class BiliVideo(VideoExtractor):
             sign_this = hashlib.md5(compact_bytes('cid={}&from=miniplay&player=1&quality={}{}'.format(self.vid, 3-self.supported_stream_profile.index(q), SECRETKEY_MINILOADER), 'utf-8')).hexdigest()
             api_url = 'http://interface.bilibili.com/playurl?cid={}&player=1&quality={}&from=miniplay&sign={}'.format(self.vid, 3-self.supported_stream_profile.index(q), sign_this)
             html = get_content(api_url)
+            print(api_url)
             self.logger.debug("HTML> {}".format(html))
             urls, size, ext = parse_cid_playurl(html)
             if ext == 'hdmp4':
