@@ -99,12 +99,12 @@ def handle_videoinfo(info, index=0):
     else:
         name = info.build_file_name(stream_id)
 
-    # ext = info.streams[stream_id]['container']
-    # live = info.live
-    # if args.player:
-    #     launch_player(args.player, urls)
-    # else:
-    #     download(urls, name, ext, live)
+    ext = info.streams[stream_id]['container']
+    live = info.live
+    if args.player:
+        launch_player(args.player, urls)
+    else:
+        download(urls, name, ext, live)
 
 def main():
     arg_parser()

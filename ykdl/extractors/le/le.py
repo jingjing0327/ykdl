@@ -80,13 +80,15 @@ class Letv(VideoExtractor):
             # hold on ! more things to do
             # to decode m3u8 (encoded)
             suffix = '&r=' + str(int(time.time() * 1000)) + '&appid=500'
-            m3u8 = get_content(data2["location"]+suffix, charset = 'ignore')
-            m3u8_list = decode(m3u8)
+            m3u8_url = data2["location"]+suffix
+            # m3u8 = get_content(data2["location"]+suffix, charset = 'ignore')
+            # m3u8_list = decode(m3u8)
             stream_id = self.stream_2_id[stream]
             info.streams[stream_id] = {'container': 'm3u8', 'video_profile': self.stream_2_profile[stream], 'size' : 0}
             stream_temp[stream] = compact_tempfile(mode='w+t', suffix='.m3u8')
-            stream_temp[stream].write(m3u8_list)
-            info.streams[stream_id]['src'] = [stream_temp[stream].name]
+            # stream_temp[stream].write(m3u8_list)
+            # info.streams[stream_id]['src'] = [stream_temp[stream].name]
+            info.streams[stream_id]['src'] = m3u8_url
             stream_temp[stream].flush()
             info.stream_types.append(stream_id)
         return info

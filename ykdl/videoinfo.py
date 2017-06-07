@@ -38,6 +38,7 @@ class VideoInfo():
             a=json.dumps(stream)
             jo=json.loads(a)
             print(jo)
+        
 
     def jsonlize(self):
         json_dict = { 'site'   : self.site,

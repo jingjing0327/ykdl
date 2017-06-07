@@ -28,7 +28,9 @@ class Acorig(VideoExtractor):
         for s in stream_data['stream']:
             if 'segs' in s:
                 stream_type = stream_code_to_id[s['stream_type']]
-                stream_urls = [seg['url'] for seg in s['segs']]
+                stream_urls=[]
+                for x in s['segs']:
+                    stream_urls.append((x['url'],x['total_milliseconds_video']))
                 size = s['total_size']
                 info.stream_types.append(stream_type)
                 info.streams[stream_type] = {'container': 'mp4', 'video_profile': stream_code_to_profiles[stream_type], 'src': stream_urls, 'size' : size}
