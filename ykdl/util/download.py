@@ -15,9 +15,9 @@ try:
     MultiThread = True
 except:
     MultiThread = False
-    logger.warning("failed to import ThreadPoolExecutor!")
-    logger.warning("multithread download disabled!")
-    logger.warning("please install concurrent.futures from https://github.com/agronholm/pythonfutures !")
+    # logger.warning("failed to import ThreadPoolExecutor!")
+    # logger.warning("multithread download disabled!")
+    # logger.warning("please install concurrent.futures from https://github.com/agronholm/pythonfutures !")
 
 def simple_hook(arg1, arg2, arg3):
     if arg3 > 0:
