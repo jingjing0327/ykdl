@@ -81,7 +81,7 @@ class Iqiyi(VideoExtractor):
             for seg_info in fs_array:
                 url = url_prefix + seg_info['l']
                 json_data=json.loads(get_content(url))
-                duration=seg_info['d']
+                duration=seg_info['d']+'000'
                 down_url = json_data['l']
                 real_urls.append((down_url,duration))
             stream = self.vd_2_id[bid]
