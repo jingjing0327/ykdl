@@ -20,7 +20,7 @@ class Acfun(EmbedExtractor):
         else:
             sourceVid=user_sourceVid
 
-        data = json.loads(get_content('http://www.acfun.tv/video/getVideo.aspx?id={}'.format(sourceVid)))
+        data = json.loads(get_content('http://www.acfun.cn/video/getVideo.aspx?id={}'.format(sourceVid)))
         sourceType = data['sourceType']
         sourceId = data['sourceId']
 
